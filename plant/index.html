@@ -1,31 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>Помоги полить цветок! 🌿</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Помоги полить цветок! 🌿</title>
     <style>
-        body { font-family: sans-serif; text-align: center; padding: 50px; background: #f0fdf4; }
-        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        button { background: #22c55e; color: white; border: none; padding: 15px 30px; border-radius: 10px; font-size: 18px; cursor: pointer; }
-        .logo { font-size: 50px; }
+        body { font-family: -apple-system, system-ui, sans-serif; text-align: center; padding: 20px; background: #f0fdf4; color: #166534; }
+        .card { background: white; padding: 30px; border-radius: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); max-width: 400px; margin: auto; }
+        .icon { font-size: 64px; margin-bottom: 10px; }
+        h1 { font-size: 24px; margin-bottom: 8px; }
+        .instruction { background: #f8fafc; padding: 15px; border-radius: 12px; margin: 20px 0; border-left: 4px solid #22c55e; text-align: left; }
+        button { background: #22c55e; color: white; border: none; padding: 16px 32px; border-radius: 16px; font-size: 18px; font-weight: bold; cursor: pointer; width: 100%; transition: 0.3s; }
+        button:active { transform: scale(0.98); }
+        .success-msg { display: none; color: #15803d; font-weight: bold; margin-top: 20px; }
+        .store-link { display: block; margin-top: 25px; color: #166534; text-decoration: none; font-size: 14px; opacity: 0.8; }
     </style>
 </head>
 <body>
     <div class="card">
-        <div class="logo">🌿</div>
-        <h1>Нужна помощь!</h1>
-        <p>Привет! Пожалуйста, полей мой цветок, пока меня нет рядом.</p>
-        <br>
-        <button onclick="alert('Спасибо! Хозяин получит уведомление (в разработке)')">Я полил(а)! ✅</button>
-        <p><small>Или установи приложение "Цветок" в RuStore</small></p>
+        <div class="icon">🌿</div>
+        <h1 id="plantName">Нужна помощь!</h1>
+        <p>Привет! Пожалуйста, полей меня, пока хозяина нет рядом.</p>
+        
+        <div class="instruction">
+            <strong>Как поливать:</strong><br>
+            <span id="waterNeeds">Налей немного воды комнатной температуры под корень.</span>
+        </div>
+
+        <button id="waterBtn" onclick="markAsWatered()">Я полил(а)! ✅</button>
+        
+        <div id="successArea" class="success-msg">
+            Ура! Спасибо за заботу! ❤️<br>
+            Хозяин будет очень рад.
+        </div>
+
+        <a href="https://www.rustore.ru/catalog/app/ru.kharlamov.cvetok" class="store-link">
+            Тоже любишь цветы? Скачай приложение <b>"Цветок"</b>
+        </a>
     </div>
 
     <script>
-        // Логика: если приложение установлено, пытаемся открыть его
-        const plantId = window.location.pathname.split('/').pop();
-        if (plantId && plantId !== 'plant') {
-            console.log("Пытаемся открыть растение:", plantId);
+        // Получаем данные из URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const name = urlParams.get('name');
+        const water = urlParams.get('water');
+
+        if (name) document.getElementById('plantName').innerText = "Я — " + decodeURIComponent(name) + " 🌿";
+        if (water) document.getElementById('waterNeeds').innerText = decodeURIComponent(water);
+
+        function markAsWatered() {
+            document.getElementById('waterBtn').style.display = 'none';
+            document.getElementById('successArea').style.display = 'block';
+            // Здесь в будущем можно добавить отправку уведомления через API
         }
     </script>
 </body>
